@@ -4,7 +4,7 @@ import { sequelize } from "../instances/Mysql"
 export interface UserInstance extends Model {
     id: number,
     name: string,
-    password: number
+    password: string
 }
 
 export const User = sequelize.define<UserInstance>('users', {
@@ -13,12 +13,19 @@ export const User = sequelize.define<UserInstance>('users', {
         autoIncrement:true,
         type: DataTypes.INTEGER
     },
-    name: {
-        type: DataTypes.STRING
-    },
     password: {
-        type: DataTypes.INTEGER
-    }}, {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    movies: {
+        type: DataTypes.ARRAY(DataTypes.NUMBER),
+        allowNull: true,
+    }
+    }, {
         tableName: "users",
         timestamps: false
     })

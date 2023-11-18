@@ -1,13 +1,15 @@
 import { Response, Request } from "express"
 import { User } from "../model/User"
+import argon2 from 'argon2'
 
 const UserModification = async (req: Request, res: Response) =>{
     const {name, password} = req.body
-    const userbd = await User.findOne({where : {name, password}})
+    const hash: string = await argon2.hash(password)
+    const userbd = await User.findOne({where : {name, password: hash}})
     if (userbd) {
         userbd.update({
             name,
-            password
+            password: hash
         })
         res.json({sucess : true})
     }else{

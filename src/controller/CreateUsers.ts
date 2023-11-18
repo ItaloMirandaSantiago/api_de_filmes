@@ -1,5 +1,6 @@
 import { Response, Request } from "express";
 import { User } from "../model/User";
+import argon2 from 'argon2'
 
  const create = async (req: Request, res: Response) =>{
     const {name, password } : {name: string, password : string} = req.body
@@ -8,8 +9,9 @@ import { User } from "../model/User";
         let verification = await User.findOne({where : {name}})
 
         if (!verification) {
-            await User.create({name, password})
-            res.json({sucess: true}) 
+            const hash: string = await argon2.hash(password)
+            await User.create({name, password : hash})
+            res.json({sucess: true, User}) 
         } else{
             res.json({error : 'Usuário já existente'});            
         } 
