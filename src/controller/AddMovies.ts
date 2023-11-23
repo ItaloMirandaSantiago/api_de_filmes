@@ -10,6 +10,7 @@ type UserType = {
 
 const addMovies = async (req: Request, res:Response)=>{
     let reqUser: UserType = req.user as UserType
+    console.log(req.body)
     if (req.body.idmovie) {
             let addmovie = reqUser.movies ? reqUser.movies : []
             if (addmovie.includes(req.body.idmovie)) {
@@ -23,7 +24,7 @@ const addMovies = async (req: Request, res:Response)=>{
                 res.status(500).json({sucess : false, error : "error interno do servidor"})
             }
     }else{
-        res.json({sucess : true, movies : reqUser.movies})
+        res.json({sucess : false, menssage: 'Parâmetro faltante'})
     }
 }
 

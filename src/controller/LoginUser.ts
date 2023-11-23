@@ -5,21 +5,28 @@ import { generateToken } from "../config/passport";
 
 
 const Login = async (req: Request, res: Response) =>{
-    const {name, password} = req.body
+    const {name, password } : {name: string, password : string} = req.body
+    console.log(name, password, req.body)
+    if (name && password) {
 
-    const hash: string = await argon2.hash(password)
-    const token = generateToken({name})
-    const user = await User.findOne({where : {name}})
+        const user = await User.findOne({where : {name}})
 
-    if (user) {
-        const hashValid = await argon2.verify(user.password, password)
-        if (hashValid) {
-            res.json({status: true, token})
+        if (user) {
+
+            const token = generateToken({name})
+
+            const hashValid = await argon2.verify(user.password, password)
+
+            if (hashValid) {
+                res.json({status: true, token})
+            }else{
+                res.json({error : "Usuário não encontrado"})
+            }
         }else{
             res.json({error : "Usuário não encontrado"})
         }
     }else{
-        res.json({error : "Usuário não encontrado"})
+        res.json({sucess: false, error : 'requisições indefinidas '})
     }
 }
 

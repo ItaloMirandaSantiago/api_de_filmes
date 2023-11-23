@@ -29,10 +29,11 @@ const options = {
     }
 
     export const privateRouter = (req:Request, res:Response, next:NextFunction) =>{
-        passport.authenticate('jwt', (err: any, user: any) => {
+        
+        passport.authenticate('jwt', { session: false }, (error: any, user: any, info: any) => {
             req.user = user
-            return user ? next() : next(notAuthorizedJson)
-        })(req, res, next);
+            return user ? next() : res.json({sucess : false, error: 'token invalido'})
+        })(req, res, next)
     }
 
     export default passport

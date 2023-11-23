@@ -9,6 +9,7 @@ type UserType = {
 }
 
 const deleteMovies = async (req: Request, res:Response)=>{
+    let verification = true
     let reqUser: UserType = req.user as UserType
     if (req.body.idmovie) {
             let addmovie = reqUser.movies ? reqUser.movies : []
@@ -16,12 +17,16 @@ const deleteMovies = async (req: Request, res:Response)=>{
                if(req.body.idmovie === addmovie[i]){
                     addmovie.splice(i,1)
                     try{
+                        verification = false
                         await User.update({movies : addmovie}, {where : {id: reqUser.id}})
                         res.json({sucess : true, movies: addmovie, })
                     }catch(err){
                         res.status(500).json({sucess : false, error : "error interno do servidor"})
                     }
                }
+            }
+            if (verification) {
+                res.json({sucess: false, error: "Este filme ainda não foi adicionado"})
             }
     }else{
         res.status(400).json({sucess : false, error : "parâmetros faltantes"})
