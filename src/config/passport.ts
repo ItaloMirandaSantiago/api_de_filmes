@@ -11,7 +11,7 @@ dotenv.config()
 const notAuthorizedJson = {status : 401, menssage : 'Não autorizado'}
 const options = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.JWT_SECRET_KEY as string | "mqoix992emd0niCOCA2e@jiewd@i9HELLOWORD320@!39"
+    secretOrKey: "mqoix992emd0niCOCA2e@jiewd@i9HELLOWORD320@!39"
 }
 
     passport.use(new JWTStrategy(options, async (payload, done)=>{
@@ -25,7 +25,7 @@ const options = {
     ))
 
     export const generateToken = (data: object) =>{
-        return jwt.sign(data, process.env.JWT_SECRET_KEY as string | "mqoix992emd0niCOCA2e@jiewd@i9HELLOWORD320@!39", {expiresIn: '1h'})
+        return jwt.sign(data, "mqoix992emd0niCOCA2e@jiewd@i9HELLOWORD320@!39", {expiresIn: '1h'})
     }
 
     export const privateRouter = (req:Request, res:Response, next:NextFunction) =>{
